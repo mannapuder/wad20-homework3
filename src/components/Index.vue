@@ -1,5 +1,7 @@
 <template>
+    <div id="index">
     <section class="main-container"></section>
+    </div>
 </template>
 <script>
     import Vue from 'vue'
