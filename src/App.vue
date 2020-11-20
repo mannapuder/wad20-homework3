@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" @click="toggleshow()">
         <searchbar v-if="['login'].indexOf($route.name) === -1"></searchbar>
         <router-view></router-view>
     </div>
@@ -241,6 +241,11 @@
         name: "app",
         components: {
             Searchbar
+        },
+        methods: {
+            toggleshow() {
+                this.$store.commit("toggleshow", false)
+            }
         }
     };
 </script>

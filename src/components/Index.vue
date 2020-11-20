@@ -11,7 +11,6 @@
         mounted() {
             $(function () {
 
-                toggleProfileMenu();
                 loadUserData();
                 loadPosts();
                 handleLike();
@@ -76,12 +75,6 @@
                         postContainer.append(postActions)
                         $('.main-container').append(postContainer)
                     }
-                })
-            }
-
-            function toggleProfileMenu() {
-                $('.avatar-container img').click(function () {
-                    $(this).siblings('.drop-down-container').toggle()
                 })
             }
 

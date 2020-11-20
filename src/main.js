@@ -20,10 +20,13 @@ const router = new VueRouter({routes});
 
 const store = new Vuex.Store({
     state: {
+        showprofile:false
     },
     mutations: {
+        toggleshow: (state, show) => state.showprofile = show
     },
     getters: {
+        getshow: (state) => () => {return state.showprofile}
     }
 });
 

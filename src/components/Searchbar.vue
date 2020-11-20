@@ -7,8 +7,8 @@
             <input type="text" name="search"><button type="button">Search</button>
         </div>
         <div class="avatar-container">
-            <img class="avatar">
-            <div class="drop-down-container">
+            <img class="avatar" @click.stop="toggleshow()">
+            <div v-show="show" @click.stop="" ref="dropdown" class="drop-down-container" style="display: block">
                 <span id="user-name">John Doe</span>
                 <span id="user-email"></span>
                 <span class="separator"></span>
@@ -23,3 +23,17 @@
         </div>
     </nav>
 </template>
+<script>
+    export default {
+        computed: {
+            show: function () {
+                return this.$store.getters.getshow()
+            }
+        },
+        methods: {
+            toggleshow() {
+                this.$store.commit("toggleshow", !this.show)
+            }
+        }
+    }
+</script>

@@ -10,7 +10,6 @@
         mounted () {
             $(function () {
 
-                toggleProfileMenu();
                 loadUserData();
                 loadProfiles();
                 handleLike();
@@ -47,12 +46,6 @@
 
                         $('.main-container').append(profileContainer)
                     }
-                })
-            }
-
-            function toggleProfileMenu() {
-                $('.avatar-container img').click(function () {
-                    $(this).siblings('.drop-down-container').toggle()
                 })
             }
 
