@@ -24,11 +24,13 @@ const store = new Vuex.Store({
         posts: [],
         profiles: [],
         user: {},
+        showDropdown: false
     },
     getters: {
         allPosts: (state) => state.posts,
         allProfiles: (state) => state.profiles,
-        currentUser: (state) => state.user
+        currentUser: (state) => state.user,
+        dropdown: (state) => state.showDropdown
     },
     actions: {
         getPosts({ commit }) {
@@ -51,6 +53,9 @@ const store = new Vuex.Store({
             state.profiles = profiles },
         SET_USER(state, user){
             state.user = user
+        },
+        SET_DROPDOWN(state, show){
+            state.showDropdown = show
         }
     }
 });

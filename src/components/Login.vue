@@ -45,12 +45,12 @@
         }, 
         methods: {
             login() {
-                if(this.input.username != "" && this.input.password != "") {
+                if(this.input.username !== "" && this.input.password !== "") {
                     this.$router.push({path: '/index'});
                     this.input.username = "";
                     this.input.password = "";
                 } else {
-                    console.log("Wrong username or password!");
+                    alert("Wrong username or password!");
                     this.$router.replace({path: '/'});
                 }
             }

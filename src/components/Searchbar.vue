@@ -10,7 +10,7 @@
     </div>
     <div class="avatar-container">
       <img class="avatar" :src="currentUser.avatar" v-if="currentUser" @click.stop="toggleDropdown">
-      <div v-if="currentUser && isDropdownVisible" class="drop-down-container">
+      <div v-if="currentUser && showDropdown" @click.stop="" class="drop-down-container">
         <span id="user-name">{{ currentUser.firstname | addLastName(currentUser.lastname) }}</span>
         <span id="user-email">{{ currentUser.email }}</span>
         <span class="separator"></span>
@@ -28,17 +28,14 @@
 </template>
 <script>
 
-import Vue from 'vue'
-
-Vue.use("vuex");
 export default {
-
-  data : function (){
-  },
 
   computed: {
     currentUser: function () {
       return this.$store.getters.currentUser
+    },
+    showDropdown: function () {
+      return this.$store.getters.dropdown
     }
   },
 
@@ -48,13 +45,13 @@ export default {
 
   methods: {
     toggleDropdown(){
-      this.isDropdownVisible = !this.isDropdownVisible;
+      this.$store.commit("SET_DROPDOWN", !this.showDropdown)
     }
   },
 
   filters: {
     addLastName: function (value, lastname) {
-      if (!lastname) return
+      if (!lastname) return;
       return value + " " + lastname
     }
   }

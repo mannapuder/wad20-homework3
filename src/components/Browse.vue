@@ -10,10 +10,6 @@
   </div>
 </template>
 <script>
-
-import Vue from 'vue'
-
-Vue.use("vuex");
 export default {
 
   computed: {
@@ -39,7 +35,7 @@ export default {
 
   filters: {
     addLastName: function (value, lastname) {
-      if (!lastname) return
+      if (!lastname) return;
       return value + " " + lastname
     }
   }
@@ -65,13 +61,5 @@ export default {
   background-color: #ffffff;
   border: 1px solid #82008f;
   color: #82008f;
-}
-
-.main-container {
-  width: 50%;
-  min-height: 100%;
-  margin: auto auto;
-  padding: 50px 15px 15px 15px;
-  background-color: #ffffff;
 }
 </style>
