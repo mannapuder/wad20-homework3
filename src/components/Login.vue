@@ -14,7 +14,6 @@
             </div>
             <div>
                 <h3>Please Log In</h3>
-                <form>
                     <div>
                         <input type="text" name="email" v-model="input.username" placeholder="Email">
                     </div>
@@ -27,7 +26,6 @@
                             <a href="#">Forgot password?</a>
                         </small>
                     </div>
-                </form>
             </div>
         </section>
     </section>
@@ -53,6 +51,7 @@
                     this.input.password = "";
                 } else {
                     console.log("Wrong username or password!");
+                    this.$router.replace({path: '/'});
                 }
             }
         },
@@ -81,7 +80,7 @@
     text-align: center;
 }
 
-#login-container form div > input {
+#login-container input {
     padding: 8px 16px;
     margin: 4px 0;
 }

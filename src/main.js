@@ -5,6 +5,9 @@ import App from './App.vue'
 import Browse from "./components/Browse";
 import Index from "./components/Index";
 import Login from "./components/Login";
+import axios from 'axios'
+//import User from "./models/user";
+//import currentUser from "./models/currentUser";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -20,10 +23,20 @@ const router = new VueRouter({routes});
 
 const store = new Vuex.Store({
     state: {
-    },
-    mutations: {
+        posts: [],
     },
     getters: {
+        allPosts: (state) => state.posts,
+    },
+    actions: {
+        getPosts({ commit }) {
+            axios.get('https://private-517bb-wad20postit.apiary-mock.com/posts')
+            .then(response => {
+            commit('SET_POSTS', response.data) })}
+    },
+    mutations: {
+        SET_POSTS(state, posts) {
+            state.posts = posts }
     }
 });
 

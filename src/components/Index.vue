@@ -1,95 +1,149 @@
 <template>
     <div id="index">
-    <section class="main-container"></section>
+        <section class="main-container">
+            <div class="post" v-for="post in posts" :key="post.id">
+                <div class="post-author">
+                    <span class="post-author-info">
+                        <img :src="post.author.avatar" alt="Post author avatar"/>
+                        <small> {{ post.author.firstname | addLastName(post.author.lastname)}} </small>
+                    </span>
+
+                    <small class="date"> {{ post.createTime }} </small>
+                </div>
+
+                <div class="post-image" v-if="post.media">
+                    <img v-if="post.media.type == 'image'" :src="post.media.url"/>
+                    <video v-if="post.media.type == 'video'" controls :src="post.media.url"/>
+                </div>
+
+                <div class="post-title">
+                    <h3 v-if="post.text"> {{ post.text }} </h3>
+                </div>
+
+                <div class="post-actions">
+                    <button class="like-button" @click="handleLike"> {{ post.likes }} </button>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
 <script>
     import Vue from 'vue'
-    import $ from "jquery"
-    Vue.use("jquery");
+    //import $ from "jquery"
+    Vue.use("vuex");
     export default {
+        computed: {
+            posts: function() {
+                return this.$store.state.posts
+            }
+        },
         mounted() {
-            $(function () {
-
-                toggleProfileMenu();
-                loadUserData();
-                loadPosts();
-                handleLike();
-            });
-
-            function loadUserData() {
-                $.ajax({
-                    url: 'https://private-517bb-wad20postit.apiary-mock.com/users/1',
-                    method: 'get'
-                }).then(function (data) {
-                    $('.avatar-container img').attr('src', data.avatar);
-                    $('.avatar-container #user-name').text(data.firstname + " " + data.lastname);
-                    $('.avatar-container #user-email').text(data.email);
-                })
+            this.$store.dispatch("getPosts");
+        },
+        methods: {
+            handleLike(event) {
+                event.target.classList.toggle("liked");
             }
-
-            function loadPosts() {
-                $.ajax({
-                    url: 'https://private-517bb-wad20postit.apiary-mock.com/posts',
-                    method: 'get'
-                }).then(function (data) {
-                    for (let post of data) {
-                        let postContainer = $('<div class="post">');
-                        let postTitle = $('<div class="post-title">');
-                        let postActions = $('<div class="post-actions">');
-                        let author = $('<span class="post-author">');
-                        let authorInfo = $('<span class="post-author-info">');
-                        let authorName = $('<small>').text(post.author.firstname + " " + post.author.lastname);
-                        let authorImage = $('<img>')
-                            .attr('src', post.author.avatar)
-                            .attr('alt', post.author.firstname + " " + post.author.lastname);
-                        let createTime = $('<small>').text(post.createTime);
-                        let title = $('<h3>').text(post.text);
-                        let likeButton = $('<button type="button" class="like-button">').text(post.likes);
-
-                        authorInfo.append(authorImage);
-                        authorInfo.append(authorName);
-                        author.append(authorInfo);
-                        author.append(createTime);
-                        postTitle.append(title);
-                        postActions.append(likeButton);
-
-                        postContainer.append(author);
-
-                        if (post.media != null) {
-                            let postMedia = $('<div class="post-image">')
-                            if (post.media.type ==='image') {
-                                let img = $('<img>')
-                                    .attr('src', post.media.url)
-                                    .attr('alt', post.text);
-                                postMedia.append(img);
-                                postContainer.append(postMedia);
-                            } else if (post.media.type === "video") {
-                                let video = $('<video controls>');
-                                let source =  $('<source type="video/mp4">').attr('src', post.media.url);
-                                video.append(source)
-                                postMedia.append(video);
-                                postContainer.append(postMedia);
-                            }
-                        }
-                        postContainer.append(postTitle)
-                        postContainer.append(postActions)
-                        $('.main-container').append(postContainer)
-                    }
-                })
+        },
+        filters: {
+            addLastName: function(value, lastname) {
+                if (!lastname) return
+                return value + " " + lastname
             }
-
-            function toggleProfileMenu() {
-                $('.avatar-container img').click(function () {
-                    $(this).siblings('.drop-down-container').toggle()
-                })
-            }
-
-            function handleLike() {
-                $(document).on('click', '.like-button', function () {
-                    $(this).toggleClass('liked')
-                })
-            }
-        }
+        } 
     }
 </script>
+
+<style scoped>
+
+    .main-container {
+        width: 50%;
+        min-height: 100%;
+        margin: auto auto;
+        padding: 50px 15px 15px 15px;
+        background-color: #ffffff;
+    }
+
+    .post {
+        width: 80%;
+        margin: 15px auto;
+        box-shadow: 0 0 15px rgba(38, 50, 56, 0.33);
+        border-radius: 5px;
+    }
+
+    .post .post-author {
+        padding: 10px;
+    }
+
+    .post .post-author::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .post .post-author .post-author-info {
+        float: left;
+        position: relative;
+        width: 50%;
+    }
+
+    .post .post-author .post-author-info img {
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        object-fit: cover;
+        object-position: top;
+        margin: 5px;
+    }
+
+    .post .post-author .post-author-info small {
+        position: absolute;
+        top: 10px;
+        left: 35px;
+    }
+
+    .post .post-author .post-author-info + small {
+        float: right;
+        color: grey;
+        padding: 10px;
+    }
+
+    .post .post-image img, video {
+        width: 100%;
+        min-height: 150px;
+        max-height: 350px;
+        object-fit: cover;
+        object-position: top center;
+    }
+
+    .post .post-title {
+        padding: 10px;
+    }
+
+    .post .post-title h3 {
+        display: inline;
+    }
+
+    .post .post-title ~ .post-actions {
+        padding: 10px;
+    }
+
+    .like-button {
+        background-image: url(../assets/like.png);
+        background-size: 15px;
+        background-repeat: no-repeat;
+        background-position: 5px center;
+        background-color: #8a8a8a;
+        width: 60px;
+        height: 25px;
+        padding-left: 23px;
+        line-height: 10px;
+        text-align: left;
+        border: none;
+    }
+
+    .like-button.liked {
+        background-color: #01579b;
+    }
+
+</style>

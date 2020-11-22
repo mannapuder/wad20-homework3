@@ -2,7 +2,9 @@
     <section class="main-container"></section>
 </template>
 <script>
-
+    //import User from '../models/user'
+    //import currentUser from '../models/currentUser'
+    //import axios from 'axios'
     import Vue from 'vue'
     import $ from "jquery"
     Vue.use("jquery");
@@ -16,6 +18,7 @@
                 handleLike();
             });
 
+
             function loadUserData() {
                 $.ajax({
                     url: 'https://private-517bb-wad20postit.apiary-mock.com/users/1',
@@ -26,6 +29,7 @@
                     $('.avatar-container #user-email').text(data.email);
                 })
             }
+
 
             function loadProfiles() {
                 $.ajax({
