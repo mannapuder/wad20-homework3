@@ -23,7 +23,7 @@ const store = new Vuex.Store({
     state: {
         posts: [],
         profiles: [],
-        user: {}
+        user: {},
     },
     getters: {
         allPosts: (state) => state.posts,
@@ -50,7 +50,7 @@ const store = new Vuex.Store({
         SET_PROFILES(state, profiles) {
             state.profiles = profiles },
         SET_USER(state, user){
-            state.currentUser = user
+            state.user = user
         }
     }
 });

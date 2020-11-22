@@ -9,9 +9,8 @@
       <button type="button">Search</button>
     </div>
     <div class="avatar-container">
-      <img class="avatar" src="currentUser.avatar" v-if="currentUser" @click="toggleDropdown">
+      <img class="avatar" :src="currentUser.avatar" v-if="currentUser" @click.stop="toggleDropdown">
       <div v-if="currentUser && isDropdownVisible" class="drop-down-container">
-        <p>
         <span id="user-name">{{ currentUser.firstname | addLastName(currentUser.lastname) }}</span>
         <span id="user-email">{{ currentUser.email }}</span>
         <span class="separator"></span>
@@ -22,7 +21,6 @@
         <span>
                     <router-link to="/">Log Out</router-link>
             </span>
-        </p>
       </div>
     </div>
   </nav>
@@ -36,9 +34,6 @@ Vue.use("vuex");
 export default {
 
   data : function (){
-    return{
-      isDropdownVisible: true
-    }
   },
 
   computed: {
@@ -134,7 +129,7 @@ nav div.avatar-container {
   right: 0;
   top: 50px;
   text-align: left;
-  display: none;
+  display: block;
 }
 
 .drop-down-container span {
