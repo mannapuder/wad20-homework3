@@ -6,8 +6,6 @@ import Browse from "./components/Browse";
 import Index from "./components/Index";
 import Login from "./components/Login";
 import axios from 'axios'
-//import User from "./models/user";
-//import currentUser from "./models/currentUser";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -24,11 +22,13 @@ const router = new VueRouter({routes});
 const store = new Vuex.Store({
     state: {
         posts: [],
-        profiles: []
+        profiles: [],
+        user: {}
     },
     getters: {
         allPosts: (state) => state.posts,
-        allProfiles: (state) => state.profiles
+        allProfiles: (state) => state.profiles,
+        currentUser: (state) => state.user
     },
     actions: {
         getPosts({ commit }) {
@@ -38,13 +38,20 @@ const store = new Vuex.Store({
         getProfiles({ commit }) {
             axios.get('https://private-517bb-wad20postit.apiary-mock.com/profiles')
                 .then(response => {
-                    commit('SET_PROFILES', response.data) })}
+                    commit('SET_PROFILES', response.data) })},
+        getUser({ commit }) {
+            axios.get('https://private-517bb-wad20postit.apiary-mock.com/users/1')
+                .then(response => {
+                    commit('SET_USER', response.data) })}
     },
     mutations: {
         SET_POSTS(state, posts) {
             state.posts = posts },
         SET_PROFILES(state, profiles) {
-            state.profiles = profiles }
+            state.profiles = profiles },
+        SET_USER(state, user){
+            state.currentUser = user
+        }
     }
 });
 

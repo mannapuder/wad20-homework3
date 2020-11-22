@@ -10,18 +10,15 @@
   </div>
 </template>
 <script>
-//import User from '../models/user'
-//import currentUser from '../models/currentUser'
+
 import Vue from 'vue'
 
 Vue.use("vuex");
-
-Vue.use("jquery");
 export default {
 
   computed: {
     profiles: function () {
-      return this.$store.state.profiles
+      return this.$store.getters.allProfiles
     }
   },
 

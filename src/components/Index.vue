@@ -29,12 +29,11 @@
 </template>
 <script>
     import Vue from 'vue'
-    //import $ from "jquery"
     Vue.use("vuex");
     export default {
         computed: {
             posts: function() {
-                return this.$store.state.posts
+                return this.$store.getters.allPosts
             }
         },
         mounted() {
