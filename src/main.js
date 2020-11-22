@@ -24,19 +24,27 @@ const router = new VueRouter({routes});
 const store = new Vuex.Store({
     state: {
         posts: [],
+        profiles: []
     },
     getters: {
         allPosts: (state) => state.posts,
+        allProfiles: (state) => state.profiles
     },
     actions: {
         getPosts({ commit }) {
             axios.get('https://private-517bb-wad20postit.apiary-mock.com/posts')
             .then(response => {
-            commit('SET_POSTS', response.data) })}
+            commit('SET_POSTS', response.data) })},
+        getProfiles({ commit }) {
+            axios.get('https://private-517bb-wad20postit.apiary-mock.com/profiles')
+                .then(response => {
+                    commit('SET_PROFILES', response.data) })}
     },
     mutations: {
         SET_POSTS(state, posts) {
-            state.posts = posts }
+            state.posts = posts },
+        SET_PROFILES(state, profiles) {
+            state.profiles = profiles }
     }
 });
 

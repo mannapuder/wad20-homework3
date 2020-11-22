@@ -1,76 +1,80 @@
 <template>
-    <section class="main-container"></section>
+  <div id="browse">
+    <section class="main-container">
+      <div class="profile" v-for="profile in profiles" :key="profile.id">
+        <img :src="profile.avatar" alt="Profile author avatar"/>
+        <h2> {{ profile.firstname | addLastName(profile.lastname) }} </h2>
+        <button class="follow-button" @click="handleFollow"> {{ "Follow" }}</button>
+      </div>
+    </section>
+  </div>
 </template>
 <script>
-    //import User from '../models/user'
-    //import currentUser from '../models/currentUser'
-    //import axios from 'axios'
-    import Vue from 'vue'
-    import $ from "jquery"
-    Vue.use("jquery");
-    export default {
-        mounted () {
-            $(function () {
+//import User from '../models/user'
+//import currentUser from '../models/currentUser'
+import Vue from 'vue'
 
-                toggleProfileMenu();
-                loadUserData();
-                loadProfiles();
-                handleLike();
-            });
+Vue.use("vuex");
 
+Vue.use("jquery");
+export default {
 
-            function loadUserData() {
-                $.ajax({
-                    url: 'https://private-517bb-wad20postit.apiary-mock.com/users/1',
-                    method: 'get'
-                }).then(function (data) {
-                    $('.avatar-container img').attr('src', data.avatar);
-                    $('.avatar-container #user-name').text(data.firstname + " " + data.lastname);
-                    $('.avatar-container #user-email').text(data.email);
-                })
-            }
-
-
-            function loadProfiles() {
-                $.ajax({
-                    url: 'https://private-517bb-wad20postit.apiary-mock.com/profiles',
-                    method: 'get'
-                }).then(function (data) {
-                    for (let profile of data) {
-
-                        let profileContainer = $('<div class="profile">');
-                        let name = $('<h2>').text(profile.firstname + " " + profile.lastname);
-                        let image = $('<img>')
-                            .attr('src', profile.avatar)
-                            .attr('alt', profile.firstname + " " + profile.lastname);
-                        let button = $('<button class="follow-button">').text('Follow');
-
-                        profileContainer.append(image)
-                        profileContainer.append(name);
-                        profileContainer.append(button)
-
-                        $('.main-container').append(profileContainer)
-                    }
-                })
-            }
-
-            function toggleProfileMenu() {
-                $('.avatar-container img').click(function () {
-                    $(this).siblings('.drop-down-container').toggle()
-                })
-            }
-
-            function handleLike() {
-                $(document).on('click', '.follow-button', function () {
-                    if ($(this).hasClass('followed')) {
-                        $(this).removeClass('followed')
-                        $(this).text('Follow')
-                    } else {
-                        $(this).addClass('followed')
-                        $(this).text('Followed')
-                    }
-                })
-            }
-        }
+  computed: {
+    profiles: function () {
+      return this.$store.state.profiles
     }
+  },
+
+  mounted() {
+    this.$store.dispatch("getProfiles");
+  },
+
+  methods: {
+    handleFollow(event) {
+      event.target.classList.toggle("followed");
+      if (event.target.textContent === "Followed") {
+        event.target.textContent = "Follow";
+      } else {
+        event.target.textContent = "Followed";
+      }
+    },
+  },
+
+  filters: {
+    addLastName: function (value, lastname) {
+      if (!lastname) return
+      return value + " " + lastname
+    }
+  }
+
+}
 </script>
+
+<style scoped>
+
+.profile {
+  width: 45%;
+  display: inline-block;
+  border-radius: 5px;
+  text-align: center;
+  margin: 1%;
+}
+
+.follow-button {
+  background-color: #82008f;
+}
+
+.follow-button.followed {
+  background-color: #ffffff;
+  border: 1px solid #82008f;
+  color: #82008f;
+}
+
+.main-container {
+  width: 50%;
+  min-height: 100%;
+  margin: auto auto;
+  padding: 50px 15px 15px 15px;
+  background-color: #ffffff;
+}
+</style>
